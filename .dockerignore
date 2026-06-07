@@ -1,0 +1,10 @@
+node_modules
+data
+models
+qvac.config.json
+mockup.html
+umbrel-app-store
+.git
+.claude
+.DS_Store
+*.log

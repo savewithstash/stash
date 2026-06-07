@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Stash logo">
+  <!-- Stash — hoard everything, find anything.
+       Mark: the QVAC-style orb (the app's "brain") dropping into an inbox tray. -->
+  <defs>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38e0d4" stop-opacity="0.28"/>
+      <stop offset="70%" stop-color="#38e0d4" stop-opacity="0.07"/>
+      <stop offset="100%" stop-color="#38e0d4" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#101b2d"/>
+      <stop offset="100%" stop-color="#0a1220"/>
+    </linearGradient>
+  </defs>
+
+  <!-- app tile -->
+  <rect width="512" height="512" rx="112" fill="url(#tile)"/>
+
+  <!-- orb glow -->
+  <circle cx="256" cy="168" r="120" fill="url(#halo)"/>
+
+  <!-- orb: ring + core (matches the app favicon) -->
+  <circle cx="256" cy="168" r="46" fill="none" stroke="#38e0d4" stroke-width="17"/>
+  <circle cx="256" cy="168" r="16" fill="#38e0d4"/>
+
+  <!-- drop chevron -->
+  <polyline points="230,246 256,270 282,246" fill="none" stroke="#38e0d4"
+            stroke-width="15" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+
+  <!-- inbox tray -->
+  <path d="M84 318
+           h104 l34 46 h68 l34 -46 h104
+           v76 a30 30 0 0 1 -30 30
+           H114 a30 30 0 0 1 -30 -30 z"
+        fill="none" stroke="#e8f4f2" stroke-width="25"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stash</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="icon" href="/logo.svg" />
+  </head>
+  <body>
+    <div id="bg-fx"></div>
+    <div id="root"></div>
+
+    <!-- surface any runtime error instead of failing to a blank screen -->
+    <script>
+      window.addEventListener('error', function (e) {
+        var d = document.getElementById('__err') || document.body.appendChild(document.createElement('div'));
+        d.id = '__err';
+        d.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:999;font:12px/1.5 ui-monospace,monospace;background:#2a1215;color:#ff8a80;border:1px solid #ff5a6e;border-radius:8px;padding:10px 14px;white-space:pre-wrap;max-height:40vh;overflow:auto';
+        d.textContent = '[runtime] ' + (e.message || e.type) + (e.filename ? '  (' + e.filename.split('/').pop() + ':' + e.lineno + ')' : '');
+      });
+    </script>
+
+    <!-- on-device runtime: React + Babel, vendored so it works fully offline -->
+    <script src="/vendor/react.development.js"></script>
+    <script src="/vendor/react-dom.development.js"></script>
+    <script src="/vendor/babel.js"></script>
+
+    <!-- design source (JSX, transformed in-browser by Babel) -->
+    <script type="text/babel" data-presets="react" src="/src/Tweaks.jsx"></script>
+    <script type="text/babel" data-presets="react" src="/src/data.jsx"></script>
+    <script type="text/babel" data-presets="react" src="/src/Orb.jsx"></script>
+    <script type="text/babel" data-presets="react" src="/src/Cards.jsx"></script>
+    <script type="text/babel" data-presets="react" src="/src/Settings.jsx"></script>
+    <script type="text/babel" data-presets="react" src="/src/App.jsx"></script>
+  </body>
+</html>

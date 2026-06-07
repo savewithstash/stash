@@ -1,0 +1,24 @@
+{
+  "name": "stash",
+  "version": "1.0.0",
+  "description": "Stash every thought, picture, link or file",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "supersuryaansh",
+  "license": "AGPL-3.0",
+  "homepage": "https://github.com/savewithstash/stash#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/savewithstash/stash.git"
+  },
+  "bugs": {
+    "url": "https://github.com/savewithstash/stash/issues"
+  },
+  "type": "module",
+  "dependencies": {
+    "@qvac/sdk": "^0.12.0"
+  }
+}

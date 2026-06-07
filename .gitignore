@@ -1,0 +1,6 @@
+node_modules/
+data/
+models/
+qvac.config.json
+*.log
+.claude
