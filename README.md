@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <a href="https://youtu.be/LvlGu_FHoes"><img src="https://img.shields.io/badge/▶_watch_the_demo-ff5a6e?style=flat-square" alt="Demo"></a>
+  <a href="https://youtu.be/DqD801QB88w?si=doznZENXT_Ngj1CZ"><img src="https://img.shields.io/badge/▶_watch_the_demo-ff5a6e?style=flat-square" alt="Demo"></a>
   <a href="https://hub.docker.com/r/savewithstash/stash"><img src="https://img.shields.io/docker/v/savewithstash/stash?style=flat-square&label=docker&color=38e0d4" alt="Docker"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue?style=flat-square" alt="License: AGPL-3.0"></a>
   <a href="https://docs.qvac.tether.io/"><img src="https://img.shields.io/badge/powered_by-QVAC-9b8cff?style=flat-square" alt="Powered by QVAC"></a>
