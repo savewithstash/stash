@@ -1,0 +1,97 @@
+name: Build & publish Docker image
+
+# Builds the multi-arch (linux/amd64 + linux/arm64) image required by the
+# official Umbrel app store. The amd64 image is boot-tested on the native
+# x86 runner first — this is the check we cannot do on Apple Silicon, where
+# Rosetta only emulates SSE4.2 and the AVX2 llama.cpp kernels SIGILL.
+#
+# Trigger: push a version tag (e.g. `git tag v1.0.1 && git push --tags`),
+# or run manually from the Actions tab with an explicit version.
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Image version (no leading v), e.g. 1.0.1'
+        required: true
+
+env:
+  IMAGE: savewithstash/stash
+
+jobs:
+  build:
+    runs-on: ubuntu-latest        # native amd64 — real AVX2/FMA
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve version
+        id: ver
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            V="${{ github.event.inputs.version }}"
+          else
+            V="${GITHUB_REF_NAME#v}"   # strip the leading v from the tag
+          fi
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+          echo "Building $IMAGE:$V"
+
+      - uses: docker/setup-qemu-action@v3      # arm64 emulation for the cross build
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # ── Stage 1: build amd64 locally and boot-test it on real x86 ──────────
+      - name: Build amd64 image for smoke test
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          load: true
+          tags: ${{ env.IMAGE }}:smoketest-amd64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Smoke-test amd64 (worker must load a model without SIGILL)
+        run: |
+          docker run -d --name stash -p 5173:5173 -e PORT=5173 "$IMAGE:smoketest-amd64"
+          echo "Waiting for QVAC worker to load the embedding model on native x86…"
+          for i in $(seq 1 60); do
+            if ! docker ps --filter name=stash --format '{{.Status}}' | grep -q Up; then
+              echo "::error::container exited unexpectedly"; docker logs stash; exit 1
+            fi
+            st=$(curl -s http://localhost:5173/api/status || echo '{}')
+            state=$(echo "$st" | python3 -c "import json,sys;print(json.load(sys.stdin).get('state','?'))" 2>/dev/null || echo '?')
+            msg=$(echo "$st" | python3 -c "import json,sys;print(json.load(sys.stdin).get('message',''))" 2>/dev/null || echo '')
+            echo "[$i] state=$state — $msg"
+            case "$state" in
+              ready) echo "✅ models loaded on amd64 — no SIGILL"; docker rm -f stash; exit 0 ;;
+              error) echo "::error::model load failed: $msg"; docker logs stash | tail -40; docker rm -f stash; exit 1 ;;
+            esac
+            sleep 5
+          done
+          echo "::error::timed out before models reached ready"; docker logs stash | tail -40
+          docker rm -f stash; exit 1
+
+      # ── Stage 2: build both arches and push as one manifest ───────────────
+      - name: Build & push multi-arch manifest
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:${{ steps.ver.outputs.version }}
+            ${{ env.IMAGE }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Summary
+        run: |
+          echo "### Published \`$IMAGE:${{ steps.ver.outputs.version }}\` (amd64 + arm64) :rocket:" >> "$GITHUB_STEP_SUMMARY"
+          echo "amd64 smoke test passed on native x86." >> "$GITHUB_STEP_SUMMARY"
