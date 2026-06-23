@@ -15,7 +15,7 @@
 <p align="center">
   <a href="https://youtu.be/DqD801QB88w?si=doznZENXT_Ngj1CZ"><img src="https://img.shields.io/badge/▶_watch_the_demo-ff5a6e?style=flat-square" alt="Demo"></a>
   <a href="https://hub.docker.com/r/savewithstash/stash"><img src="https://img.shields.io/docker/v/savewithstash/stash?style=flat-square&label=docker&color=38e0d4" alt="Docker"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue?style=flat-square" alt="License: AGPL-3.0"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License: MIT"></a>
   <a href="https://docs.qvac.tether.io/"><img src="https://img.shields.io/badge/powered_by-QVAC-9b8cff?style=flat-square" alt="Powered by QVAC"></a>
   <img src="https://img.shields.io/badge/runs_on-Raspberry_Pi_%7C_Apple_Silicon-c7f464?style=flat-square" alt="Runs on Raspberry Pi and Apple Silicon">
 </p>
@@ -139,4 +139,4 @@ Issues and PRs welcome. The codebase is intentionally small and dependency-free 
 
 ## License
 
-[AGPL-3.0](LICENSE) © 2026 Suryaansh Singh
+[MIT](LICENSE) © 2026 Suryaansh Singh

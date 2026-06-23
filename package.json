@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "supersuryaansh",
-  "license": "AGPL-3.0",
+  "license": "MIT",
   "homepage": "https://github.com/savewithstash/stash#readme",
   "repository": {
     "type": "git",
